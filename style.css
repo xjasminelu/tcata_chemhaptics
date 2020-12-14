@@ -1,0 +1,14 @@
+body {
+  	font-family: "Lato", sans-serif;
+ 	line-height: 200%;
+ 	font-size: 15pt;
+ 	margin-left: 300px;
+ }
+
+ .button {
+ 	margin-top: 50px;
+ }
+
+ label {
+ 	padding-left: 10px;
+ }
