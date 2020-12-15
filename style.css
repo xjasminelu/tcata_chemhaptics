@@ -1,15 +1,51 @@
 body {
   	font-family: "Lato", sans-serif;
- 	line-height: 200%;
- 	font-size: 15pt;
+ 	/*font-size: 15pt;*/
  	/*margin-left: 300px;*/
+ }
+
+ html, body {
+   margin: 0;
+   padding: 0;
  }
 
  .button {
  	margin-top: 50px;
   font-size: 20px;
+  margin-bottom:50px;
  }
 
  label {
  	padding-left: 10px;
+ }
+
+ #on_setup_view {
+   display: none;
+ }
+
+ #tcata_view {
+   display: none;
+ }
+
+ #off_setup_view {
+   display: none;
+ }
+
+ #collect_data_view {
+   display: none;
+ }
+
+ .page {
+   padding: 5% 10% 5% 10%;
+ }
+
+ canvas {
+   position: fixed;
+ }
+
+ .row {
+ }
+
+ .for-next {
+   color: gray;
  }
