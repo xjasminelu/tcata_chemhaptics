@@ -1,0 +1,19 @@
+{
+  "name": "tcata",
+  "version": "1.0.0",
+  "description": "",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/xjasminelu/tcata_chemhaptics.git"
+  },
+  "author": "Jasmine Lu",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/xjasminelu/tcata_chemhaptics/issues"
+  },
+  "homepage": "https://github.com/xjasminelu/tcata_chemhaptics#readme"
+}
