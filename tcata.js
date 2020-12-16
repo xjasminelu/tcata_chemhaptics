@@ -28,12 +28,26 @@ function setup() {
 
 function initializeCheckboxes() {
 	let checkBoxes = [];
-	attributes.forEach(function(item, index, array) {
+	attr_rand = shuffleArray(attributes);
+	let ids = [];
+	attr_rand.forEach(function(item, index, array) {
 		checkBoxes[index] = createCheckbox(index+1 +". " + item, false);
 		checkBoxes[index].changed(onAttributeChange);
 		checkBoxes[index].addClass('checkmark');
+		checkBoxes[index].addClass(state);
+		checkBoxes[index].id("check" + (index+1));
 		checkBoxes[index].parent('checkboxes');
 	})
+}
+
+function shuffleArray(array) {
+    for (var i = array.length - 1; i > 0; i--) {
+        var j = Math.floor(Math.random() * (i + 1));
+        var temp = array[i];
+        array[i] = array[j];
+        array[j] = temp;
+    }
+		return array;
 }
 
 function init_view() {
@@ -133,7 +147,6 @@ function click_continue() {
 }
 
 function click_s_stopped() {
-	window.scrollTo(0,0);
 	if(state == 'ON_TCATA'){
 		console.log("OFF_SETUP");
 		state='OFF_SETUP';
@@ -147,38 +160,30 @@ function click_s_stopped() {
 	tcata_view = select('#tcata_view');
 	tcata_view.hide();
 	redraw();
-	window.scrollTo(0,0);
 
 }
 
 function click_im_ready() {
-	window.scrollTo(0, 0);
-	console.log("I'M READY")
 	on_set_up_view.hide();
 	state='ON_TCATA';
 	redraw();
-
 }
 
 function click_on_setup() {
-	console.log(name);
-	console.log(chemID);
 	init_div.hide();
 	state = 'ON_SETUP';
-	console.log("ON SET UP");
 	redraw();
 	sessionOutput = createWriter("session_"+name+chemID+".csv");
 	sessionOutput.write(['Time,Attribute,State,Phase\n']);
-
 }
 
 function keyTyped() {
-	console.log('press');
+	var re = new RegExp('[1-9]');
 	let timeStamp = millis();
-	if (key === 's') {
-		sessionOutput.write([timeStamp + ',,,' + 'Stimulus\n']);
-	} else if (key === 'm') {
-		sessionOutput.write([timeStamp + ',,,' + 'Modulator\n']);
+	var cb_key;
+	if (key.match(re)) {
+		cb_key = select("input", "#check"+int(key));
+		cb_key.elt.click();
 	}
 }
 
