@@ -46,4 +46,21 @@ function handleRequest(req, res) {
       res.end(data);
     }
   );
+
+  if (req.method === "POST") {
+        var body = "";
+        var file_str;
+        var filename;
+        req.on("data", function (chunk) {
+            body += chunk;
+        });
+        req.on("end", function(){
+            file_str = JSON.parse(body).data;
+            filename = JSON.parse(body).filename;
+            fs.writeFile("data/"+filename, file_str, function (err) {
+              if (err) return console.log(err);
+              console.log('data file > ' + filename);
+            });
+        });
+    }
 }

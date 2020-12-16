@@ -10,9 +10,8 @@ var init_div;
 var on_set_up_view;
 var tcata_view;
 var off_setup_view;
-var name;
-var chemID;
-
+var name = '';
+var chemID = '';
 
 function preload() {
 	attributes = loadStrings('Attributes.txt');
@@ -81,21 +80,16 @@ function draw() { // Update function.
 		init_view();
 	}
 	if(state == 'ON_SETUP') {
-		//text("test", windowWidth/2, windowHeight/2);
 		on_set_up_view = select('#on_setup_view');
 		on_set_up_view.show();
 		canvas.hide();
 		im_ready_btn = createButton("I'm ready! Start trial.");
-		//im_ready_btn.position(windowWidth/2, windowHeight - 150);
-		//im_ready_btn.center('horizontal');
 		im_ready_btn.addClass('button btn btn-success');
 		im_ready_btn.parent('on_setup_view');
 		im_ready_btn.mousePressed(click_im_ready);
 
 	}
 	if(state == 'ON_TCATA') {
-		//text("Please check and uncheck the sensations listed below as you feel them.", windowWidth/2, 40);
-
 		tcata_view = select('#tcata_view');
 		tcata_view.show();
 		initializeCheckboxes();
@@ -110,8 +104,6 @@ function draw() { // Update function.
 		off_setup_view = select('#off_setup_view');
 		off_setup_view.show();
 		continue_btn = createButton("Continue to next phase of trial.");
-		//continue_btn.position(windowWidth/2, windowHeight - 150);
-		//continue_btn.center('horizontal');
 		continue_btn.addClass('button btn btn-primary');
 		continue_btn.parent('off_setup_view');
 		continue_btn.mousePressed(click_continue);
@@ -173,8 +165,9 @@ function click_on_setup() {
 	init_div.hide();
 	state = 'ON_SETUP';
 	redraw();
-	sessionOutput = createWriter("session_"+name+chemID+".csv");
-	sessionOutput.write(['Time,Attribute,State,Phase\n']);
+	//sessionOutput = createWriter("session_"+name+chemID+".csv");
+	//sessionOutput.write(['Time,Attribute,State,Phase\n']);
+	sessionOutput = 'Time,Attribute,State,Phase\n';
 }
 
 function keyTyped() {
@@ -199,10 +192,16 @@ function onAttributeChange() {
 		console.log(attribute + ' unchecked at ' + millis());
 		attributeState = 0;
 	}
-
-	sessionOutput.write([timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n']);
+	sessionOutput = sessionOutput + timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n';
+	//sessionOutput.write([timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n']);
 }
 
 function closeFile() {
-	sessionOutput.close();
+	var xhr = new XMLHttpRequest();
+	xhr.open("POST", window.location.href, true);
+	xhr.setRequestHeader('Content-Type', 'application/json');
+	xhr.send(JSON.stringify({
+	    data: sessionOutput,
+			filename: "session_" + name + chemID + ".csv"
+	}));
 }
