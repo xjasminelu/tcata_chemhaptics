@@ -189,7 +189,7 @@ function keyTyped() {
 
 function onAttributeChange() {
 	let timestamp = millis();
-	let attribute = this.value();
+	let attribute = this.value().substring(3);
 	let attributeState;
 
 	if (this.checked()) {
