@@ -13,6 +13,9 @@ var off_setup_view;
 var name = '';
 var chemID = '';
 
+var time_counter;
+var action = "Compress";
+
 function preload() {
 	attributes = loadStrings('Attributes.txt');
 }
@@ -91,13 +94,20 @@ function draw() { // Update function.
 	}
 	if(state == 'ON_TCATA') {
 		tcata_view = select('#tcata_view');
-		tcata_view.show();
+		tcata_view.style('display','flex');
 		initializeCheckboxes();
 		s_stopped = createButton('Sensations have stopped for over 30sec.');
 		s_stopped.addClass('button btn btn-primary');
 		s_stopped.parent('on_tcata');
 		s_stopped.mousePressed(click_s_stopped);
 		canvas.hide();
+		let timestamp = millis();
+		sessionOutput = sessionOutput + timestamp + ',,, START\n';
+		timer = createP("<h3> 0:00 </h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing and releasing the pipette every 5 seconds.</h5>");
+		timer.id('timer');
+		timer.parent('tcata_help');
+		time_counter = 0;
+  	setInterval(timeIt, 1000);
 	}
 
 	if(state == 'OFF_SETUP') {
@@ -119,7 +129,7 @@ function draw() { // Update function.
 	}
 
 	if(state== 'COLLECT_DATA') {
-		get_file = createButton('Download Session CSV');
+		get_file = createButton('Submit Session Data');
 		get_file.addClass('button btn btn-success');
 		get_file.parent('collect_data_view');
 		get_file.mousePressed(closeFile);
@@ -128,13 +138,40 @@ function draw() { // Update function.
 	window.scrollTo(0,0);
 }
 
+
+function timeIt() {
+  // 1 counter = 1 second
+  time_counter++;
+
+	minutes = floor(time_counter/60);
+  seconds = time_counter % 60;
+
+  // if (counter < 60)
+	if(seconds < 10){
+		sec_str = "0" + seconds;
+	}
+	else {
+		sec_str = seconds;
+	}
+
+	if(time_counter%5 == 0 && time_counter != 0){
+		if(action == "Compress"){
+			action = "Release"
+		}
+		else {
+			action = "Compress"
+		}
+	}
+  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing and releasing the pipette every 5 seconds.</h5>");
+}
+
 function click_continue() {
 
 	state='OFF_TCATA';
 	off_setup_view = select('#off_setup_view');
 	off_setup_view.hide();
 	tcata_view = select('#tcata_view');
-	tcata_view.show();
+	tcata_view.style('display','flex');
 	redraw();
 }
 
@@ -152,6 +189,8 @@ function click_s_stopped() {
 	tcata_view = select('#tcata_view');
 	tcata_view.hide();
 	redraw();
+	let timestamp = millis();
+	sessionOutput = sessionOutput + timestamp + ',,, S_STOPPED\n';
 
 }
 
@@ -165,8 +204,6 @@ function click_on_setup() {
 	init_div.hide();
 	state = 'ON_SETUP';
 	redraw();
-	//sessionOutput = createWriter("session_"+name+chemID+".csv");
-	//sessionOutput.write(['Time,Attribute,State,Phase\n']);
 	sessionOutput = 'Time,Attribute,State,Phase\n';
 }
 
@@ -193,7 +230,6 @@ function onAttributeChange() {
 		attributeState = 0;
 	}
 	sessionOutput = sessionOutput + timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n';
-	//sessionOutput.write([timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n']);
 }
 
 function closeFile() {

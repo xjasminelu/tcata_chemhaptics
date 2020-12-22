@@ -13,7 +13,7 @@
       <div class="row row-cols-1 row-cols-md-3 g-5">
           <div class="col-6">
             <div class="card">
-              <img src="img/temp_setup.png" class="card-img-top" alt="...">
+              <img src="img/fill_pipette.gif" class="card-img-top" alt="...">
               <div class="card-body">
                 <h5>1. Fill your pipette. </h5>
                 <p class="card-text">
@@ -90,11 +90,15 @@
         </div>
       </div>
     </div>
-    <div id='tcata_view' class='page'>
-      <h4>Please check and uncheck the sensations listed below as you feel them.</h4>
-      <h5>You can also use your keyboard to check/uncheck boxes of sensations.</h5>
-      <div id='checkboxes'></div>
-      <div id='on_tcata'></div>
+    <div id='tcata_view' class='page row'>
+      <div id='tcata_info' class='col-9'>
+        <h4>Please check and uncheck the sensations listed below as you feel them.</h4>
+        <h5>You can also use your keyboard to check/uncheck boxes of sensations.</h5>
+        <div id='checkboxes'></div>
+        <div id='on_tcata'></div>
+      </div>
+      <div id='tcata_help' class='col-3'></div>
+    </div>
     </div>
     <div id='off_setup_view' class='page'>
       <h4>Please follow these steps and proceed to next phase. </h4>
@@ -141,8 +145,7 @@
     </div>
     <div id='collect_data_view' class='page'>
       <h5>Congrats! You've finished the trial.</h5>
-      <div> Please download your session file and
-       email it to jasminelu@uchicago.edu. Then refresh the page to start another trial
+      <div> If everything went fine during this trial, please submit your session by pressing the button below. Then refresh the page to start another trial
        with a different chemical until you have done all five.
      </div>
     </div>
