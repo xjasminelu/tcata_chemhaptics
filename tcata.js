@@ -18,6 +18,7 @@ var chemID = '';
 
 var time_counter;
 var action = "Compress";
+var timer;
 
 function preload() {
 	attributes = loadStrings('Attributes.txt');
@@ -147,6 +148,9 @@ function draw() { // Update function.
 	if(state == 'OFF_TCATA') {
 		let timestamp = millis();
 		sessionOutput = sessionOutput + timestamp + ',,, START\n';
+		time_counter = 0;
+		timer.html("<h3> 0:00 </h3><h4><b> Tap </b></h4> <h5> Tap the patch every 10 seconds.</h5>");
+		action = "Tap";
 	}
 
 	if(state== 'COLLECT_DATA') {
@@ -189,6 +193,9 @@ function timeIt() {
 	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
 	}
 	else if (state == 'OFF_TCATA'){
+		if(action == "Compress"){
+			action = "..."
+		}
 		if(time_counter%5 == 0 && time_counter != 0){
 			if(action == "..."){
 				action = "Tap";
