@@ -113,7 +113,7 @@ function draw() { // Update function.
 		tcata_view = select('#tcata_view');
 		tcata_view.style('display','flex');
 		initializeCheckboxes();
-		s_stopped = createButton('Sensations have stopped for over 30sec.');
+		s_stopped = createButton('10 minutes have elapsed - Proceed.');
 		s_stopped.addClass('button btn btn-primary');
 		s_stopped.parent('on_tcata');
 		s_stopped.mousePressed(click_s_stopped);
@@ -167,15 +167,29 @@ function timeIt() {
 		sec_str = seconds;
 	}
 
-	if(time_counter%5 == 0 && time_counter != 0){
-		if(action == "Compress"){
-			action = "Tap"
+	if(state == 'ON_TCATA'){
+		if(time_counter%5 == 0 && time_counter != 0){
+			if(action == "Compress"){
+				action = "Tap"
+			}
+			else {
+				action = "Compress"
+			}
 		}
-		else {
-			action = "Compress"
-		}
+	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
 	}
-  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipette and tapping the patch every 5 seconds.</h5>");
+	else{
+		if(time_counter%5 == 0 && time_counter != 0){
+			if(action == "..."){
+				action = "Tap"
+			}
+			else {
+				action = "..."
+			}
+		}
+	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Tap the patch every 10 seconds.</h5>");
+	}
+
 }
 
 function click_continue() {
