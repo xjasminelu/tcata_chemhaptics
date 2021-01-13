@@ -2,6 +2,9 @@ let sessionOutput;
 var tcataState;
 let attributes;
 
+var tick;
+var clap;
+
 var state = 'INIT';
 var canvas;
 
@@ -18,6 +21,10 @@ var action = "Compress";
 
 function preload() {
 	attributes = loadStrings('Attributes.txt');
+
+	soundFormats('wav');
+  tick = loadSound('assets/tick.wav');
+	clap = loadSound('assets/clap.wav');
 }
 
 function setup() {
@@ -125,6 +132,7 @@ function draw() { // Update function.
 		timer.parent('tcata_help');
 		time_counter = 0;
   	setInterval(timeIt, 1000);
+		tick.play();
 	}
 
 	if(state == 'OFF_SETUP') {
@@ -170,18 +178,21 @@ function timeIt() {
 	if(state == 'ON_TCATA'){
 		if(time_counter%5 == 0 && time_counter != 0){
 			if(action == "Compress"){
-				action = "Tap"
+				action = "Tap";
+				clap.play();
 			}
 			else {
-				action = "Compress"
+				action = "Compress";
+				tick.play();
 			}
 		}
 	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
 	}
-	else{
+	else if (state == 'OFF_TCATA'){
 		if(time_counter%5 == 0 && time_counter != 0){
 			if(action == "..."){
-				action = "Tap"
+				action = "Tap";
+				clap.play();
 			}
 			else {
 				action = "..."
