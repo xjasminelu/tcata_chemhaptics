@@ -40,6 +40,23 @@ function initializeCheckboxes() {
 		checkBoxes[index].id("check" + (index+1));
 		checkBoxes[index].parent('checkboxes');
 	})
+
+	onTapText = createDiv("<b>On Tap: </b>");
+	onTapText.parent('checkboxes');
+	let tapCheckbox = [];
+	tapCheckbox[0] = createCheckbox("10. increasing sensation", false);
+	tapCheckbox[0].changed(onAttributeChange);
+	tapCheckbox[0].addClass('checkmark');
+	tapCheckbox[0].addClass(state);
+	tapCheckbox[0].id("check" + 10);
+	tapCheckbox[0].parent('checkboxes');
+
+	tapCheckbox[1] = createCheckbox("11. decreasing sensation", false);
+	tapCheckbox[1].changed(onAttributeChange);
+	tapCheckbox[1].addClass('checkmark');
+	tapCheckbox[1].addClass(state);
+	tapCheckbox[1].id("check" + 11);
+	tapCheckbox[1].parent('checkboxes');
 }
 
 function shuffleArray(array) {
@@ -103,7 +120,7 @@ function draw() { // Update function.
 		canvas.hide();
 		let timestamp = millis();
 		sessionOutput = sessionOutput + timestamp + ',,, START\n';
-		timer = createP("<h3> 0:00 </h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing and releasing the pipette every 5 seconds.</h5>");
+		timer = createP("<h3> 0:00 </h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipette and tapping the patch every 5 seconds.</h5>");
 		timer.id('timer');
 		timer.parent('tcata_help');
 		time_counter = 0;
@@ -120,12 +137,8 @@ function draw() { // Update function.
 	}
 
 	if(state == 'OFF_TCATA') {
-		//initializeCheckboxes();
-		//s_stopped2 = createButton('Sensations have stopped for over 30sec.');
-		//s_stopped2.addClass('button btn btn-primary');
-		//s_stopped2.parent('on_tcata');
-		//s_stopped2.mousePressed(click_s_stopped2);
-		//canvas.hide();
+		let timestamp = millis();
+		sessionOutput = sessionOutput + timestamp + ',,, START\n';
 	}
 
 	if(state== 'COLLECT_DATA') {
@@ -156,13 +169,13 @@ function timeIt() {
 
 	if(time_counter%5 == 0 && time_counter != 0){
 		if(action == "Compress"){
-			action = "Release"
+			action = "Tap"
 		}
 		else {
 			action = "Compress"
 		}
 	}
-  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing and releasing the pipette every 5 seconds.</h5>");
+  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipette and tapping the patch every 5 seconds.</h5>");
 }
 
 function click_continue() {
@@ -215,6 +228,15 @@ function keyTyped() {
 		cb_key = select("input", "#check"+int(key));
 		cb_key.elt.click();
 	}
+	else if (key == 'q') {
+		cb_key = select("input", "#check10");
+		cb_key.elt.click();
+	}
+	else if (key == 'w') {
+		cb_key = select("input", "#check11");
+		cb_key.elt.click();
+	}
+
 }
 
 function onAttributeChange() {
