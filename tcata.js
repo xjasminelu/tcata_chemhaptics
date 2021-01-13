@@ -188,7 +188,7 @@ function timeIt() {
 		}
 	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
 	}
-	else{
+	else if (state == 'OFF_TCATA'){
 		if(time_counter%5 == 0 && time_counter != 0){
 			if(action == "..."){
 				action = "Tap";
