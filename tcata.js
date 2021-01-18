@@ -199,18 +199,9 @@ function timeIt() {
 	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4>" + actionStr + "</h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
 	}
 	else if (state == 'OFF_TCATA'){
-<<<<<<< HEAD
 		if(time_counter%10 == 0 && time_counter != 0){
 			if(action == "<span class=\"inactive\">Tap</span>"){
 				action = "<span class=\"active\">Tap</span>";
-=======
-		if(action == "Compress"){
-			action = "..."
-		}
-		if(time_counter%5 == 0 && time_counter != 0){
-			if(action == "..."){
-				action = "Tap";
->>>>>>> 764abb31d8f1ee926ac88a9dbe612da832a47432
 				clap.play();
 			}
 		}
