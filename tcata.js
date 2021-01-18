@@ -127,7 +127,8 @@ function draw() { // Update function.
 		canvas.hide();
 		let timestamp = millis();
 		sessionOutput = sessionOutput + timestamp + ',,, START\n';
-		timer = createP("<h3> 0:00 </h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipette and tapping the patch every 5 seconds.</h5>");
+		actionStr = "<span class=\"active\">Compress</span><span class=\"inactive\"> / Tap</span>";
+		timer = createP("<h3> 0:00 </h3><h4>" + actionStr + "</h4> <h5> Alternate between compressing the pipette and tapping the patch every 5 seconds.</h5>");
 		timer.id('timer');
 		timer.parent('tcata_help');
 		time_counter = 0;
@@ -147,6 +148,7 @@ function draw() { // Update function.
 	if(state == 'OFF_TCATA') {
 		let timestamp = millis();
 		sessionOutput = sessionOutput + timestamp + ',,, START\n';
+		action = "<span class=\"active\">Tap</span>";
 	}
 
 	if(state== 'COLLECT_DATA') {
@@ -178,27 +180,32 @@ function timeIt() {
 	if(state == 'ON_TCATA'){
 		if(time_counter%5 == 0 && time_counter != 0){
 			if(action == "Compress"){
-				action = "Tap";
+				actionStr = "<span class=\"inactive\">Compress / </span><span class=\"active\">Tap</span>";
+				action = "Tap"
 				clap.play();
 			}
-			else {
-				action = "Compress";
+			else if(action == "Tap"){
+				actionStr = "<span class=\"active\">Compress</span><span class=\"inactive\"> / Tap</span>";
+				action = "Compress"
 				tick.play();
 			}
 		}
-	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
+		if(time_counter %5 == 2){
+			actionStr = "<span class=\"inactive\">Compress / Tap</span>";
+		}
+	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4>" + actionStr + "</h4> <h5> Alternate between compressing the pipettes and tapping the patch every 5 seconds.</h5>");
 	}
 	else if (state == 'OFF_TCATA'){
-		if(time_counter%5 == 0 && time_counter != 0){
-			if(action == "..."){
-				action = "Tap";
+		if(time_counter%10 == 0 && time_counter != 0){
+			if(action == "<span class=\"inactive\">Tap</span>"){
+				action = "<span class=\"active\">Tap</span>";
 				clap.play();
 			}
-			else {
-				action = "..."
-			}
 		}
-	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4><b>" + action + "</b></h4> <h5> Tap the patch every 10 seconds.</h5>");
+		if(time_counter %10 == 2){
+			action = "<span class=\"inactive\">Tap</span>";
+		}
+	  timer.html("<h3>" + minutes + ":" + sec_str + "</h3><h4>" + action + "</h4> <h5> Tap the patch every 10 seconds.</h5>");
 	}
 
 }
