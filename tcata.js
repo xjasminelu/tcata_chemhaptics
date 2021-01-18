@@ -20,6 +20,8 @@ var time_counter;
 var action = "Compress";
 var timer;
 
+var finalCheck = "";
+
 function preload() {
 	attributes = loadStrings('Attributes.txt');
 
@@ -65,6 +67,24 @@ function initializeCheckboxes() {
 	tapCheckbox[1].addClass(state);
 	tapCheckbox[1].id("check" + 11);
 	tapCheckbox[1].parent('checkboxes');
+}
+
+function initFinalCheckboxes() {
+	let final_checkBoxes = [];
+	attr_rand = shuffleArray(attributes);
+	let ids = [];
+	attr_rand.forEach(function(item, index, array) {
+		final_checkBoxes[index] = createCheckbox(item, false);
+		final_checkBoxes[index].changed(onChecked);
+		final_checkBoxes[index].addClass('checkmark');
+		final_checkBoxes[index].addClass(state);
+		final_checkBoxes[index].id("check" + (index+1));
+		final_checkBoxes[index].parent('final_check');
+	})
+}
+
+function onChecked() {
+	finalCheck = this.value();
 }
 
 function shuffleArray(array) {
@@ -154,6 +174,15 @@ function draw() { // Update function.
 		action = "<span class=\"active\">Tap</span>";
 	}
 
+	if(state == 'CHECK_DOMINANT') {
+		check_dom_view = select('#check_dominant');
+		dom_checked_btn = createButton("Most dominant sensation chosen.")
+		dom_checked_btn.addClass('button btn btn-primary');
+		dom_checked_btn.parent('check_dominant');
+		dom_checked_btn.mousePressed(dom_continue);
+		initFinalCheckboxes();
+	}
+
 	if(state== 'COLLECT_DATA') {
 		get_file = createButton('Submit Session Data');
 		get_file.addClass('button btn btn-success');
@@ -213,8 +242,17 @@ function timeIt() {
 
 }
 
-function click_continue() {
+function dom_continue() {
+	state='COLLECT_DATA';
+	sessionOutput = sessionOutput + ','+ finalCheck + ',,DOM_SENSE\n';
+	dom_check_view = select('#check_dominant');
+	dom_check_view.hide();
+	collect_data_view = select('#collect_data_view');
+	collect_data_view.show();
+	redraw();
+}
 
+function click_continue() {
 	state='OFF_TCATA';
 	off_setup_view = select('#off_setup_view');
 	off_setup_view.hide();
@@ -229,9 +267,9 @@ function click_s_stopped() {
 		state='OFF_SETUP';
 	}
 	if(state == 'OFF_TCATA') {
-		state='COLLECT_DATA';
-		collect_data_view = select('#collect_data_view');
-		collect_data_view.show();
+		state='CHECK_DOMINANT';
+		check_dom_view = select('#check_dominant');
+		check_dom_view.show();
 	}
 
 	tcata_view = select('#tcata_view');
@@ -279,14 +317,17 @@ function onAttributeChange() {
 	let attribute = this.value().substring(3);
 	let attributeState;
 
-	if (this.checked()) {
-		console.log(attribute + ' checked at ' + millis());
-		attributeState = 1;
-	} else {
-		console.log(attribute + ' unchecked at ' + millis());
-		attributeState = 0;
+	if(state == 'ON_TCATA' | state == 'OFF_TCATA')
+	{
+		if (this.checked()) {
+			console.log(attribute + ' checked at ' + millis());
+			attributeState = 1;
+		} else {
+			console.log(attribute + ' unchecked at ' + millis());
+			attributeState = 0;
+		}
+		sessionOutput = sessionOutput + timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n';
 	}
-	sessionOutput = sessionOutput + timestamp + ',' + attribute + ',' + attributeState + ',' + state +'\n';
 }
 
 function closeFile() {

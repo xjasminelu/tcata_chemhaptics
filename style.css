@@ -35,6 +35,10 @@ body {
    display: none;
  }
 
+ #check_dominant {
+   display: none;
+ }
+
  .page {
    padding: 5% 10% 5% 10%;
  }
@@ -50,7 +54,7 @@ body {
    color: gray;
  }
 
-#checkboxes {
+#checkboxes, #final_check {
   font-size: 20px;
 }
 
